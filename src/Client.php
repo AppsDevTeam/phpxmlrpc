@@ -1367,6 +1367,7 @@ class Client
         // timeout is borked
         if ($opts['timeout']) {
             curl_setopt($curl, CURLOPT_TIMEOUT, $opts['timeout'] == 1 ? 1 : $opts['timeout'] - 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $opts['timeout'] == 1 ? 1 : $opts['timeout'] - 1);
         }
 
         switch ($method) {

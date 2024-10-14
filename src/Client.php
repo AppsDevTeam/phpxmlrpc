@@ -1368,6 +1368,15 @@ class Client
         if ($opts['timeout']) {
             curl_setopt($curl, CURLOPT_TIMEOUT, $opts['timeout'] == 1 ? 1 : $opts['timeout'] - 1);
             curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $opts['timeout'] == 1 ? 1 : $opts['timeout'] - 1);
+
+            $startTime = time();
+            curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function ($ch, $download_size, $downloaded, $upload_size, $uploaded) use ($startTime) {
+                if (time() - $startTime > 30) {
+                    return 1;
+                }
+                return 0;
+            });
+            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
         }
 
         switch ($method) {
